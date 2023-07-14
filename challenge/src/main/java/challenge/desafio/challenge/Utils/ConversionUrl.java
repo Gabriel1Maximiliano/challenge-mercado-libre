@@ -7,31 +7,29 @@ public class ConversionUrl {
     private int base = allowedCharacters.length;
 
     public String encodeUrl(Long input){
-        var encodedString = new StringBuilder();
 
-        if(input == 0) {
-            return String.valueOf(allowedCharacters[0]);
-        }
+        int amountOfChar = (int) (Math.log(input) / Math.log(base)) + 1;
+        StringBuilder encodedString = new StringBuilder(amountOfChar);
 
         while (input > 0) {
-            encodedString.append(allowedCharacters[(int) (input % base)]);
+            encodedString.insert(0, allowedCharacters[(int) (input % base)]);
             input = input / base;
         }
 
-        return encodedString.reverse().toString();
+        return encodedString.toString();
     }
 
     public long decodeUrl(String input) {
-        var characters = input.toCharArray();
-        var length = characters.length;
+        char[] charactersToDecode = input.toCharArray();
+        int length = charactersToDecode.length;
 
-        var decoded = 0;
+        long decoded = 0;
+        long basePow = 1;
 
-
-        var counter = 1;
-        for (int i = 0; i < length; i++) {
-            decoded += allowedAlphabet.indexOf(characters[i]) * Math.pow(base, length - counter);
-            counter++;
+        for (int i = length - 1; i >= 0; i--) {
+            int index = allowedAlphabet.indexOf(charactersToDecode[i]);
+            decoded += index * basePow;
+            basePow *= base;
         }
         return decoded;
     }

@@ -65,11 +65,11 @@ public class ShortUrlController {
 
 
 
-    @PostMapping("/logic-deleted-url")
-    public ResponseEntity<String> logicDeleted(@RequestBody String url){
+    @DeleteMapping("/logic-deleted-url/{url}")
+    public ResponseEntity<String> logicDeleted(@PathVariable String url){
         var resp = shortUrlServices.logicDeleted(url);
         if(resp != null ){
-            return ResponseEntity.ok(resp);
+            return ResponseEntity.status(HttpStatus.CREATED).body(resp);
         }
         else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -77,19 +77,16 @@ public class ShortUrlController {
     }
 
     @PostMapping("/create-short-url")
-    public ResponseEntity<String> createShortUrl(@RequestBody ShortUrl url){
-        var resp = shortUrlServices.createShortUrl(url);
+    public String createShortUrl(@RequestBody ShortUrl url){
 
-        if(resp != null ){
-            return ResponseEntity.created(URI.create(resp)).build();
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        return shortUrlServices.createShortUrl(url);
+
     }
     @GetMapping("/{url}")
     public ResponseEntity<Void> getOriginalUrl(@PathVariable String url){
         var resp = shortUrlServices.getOriginalUrl(url);
         return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(resp)).build();
     }
+
+
 }

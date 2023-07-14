@@ -34,11 +34,22 @@ public class ShortUrl {
     @Column(name = "amount_of_clicks")
     private int amount_of_clicks;
 
-    public int getIs_active() {
-        return is_active;
-    }
 
-    public void setIs_active(int is_active) {
-        this.is_active = is_active;
-    }
+    @Getter @Setter
+    @Column(name = "deleted_of_time")
+    private Date deleted_of_time;
+
+    @Getter @Setter
+    @Column(name = "retrieved_time")
+    private long retrieved_time;
+
+    @Getter @Setter
+    @Column(name = "was_created")
+    private int was_created;
+
+    @Getter @Setter
+    @Column(name = "creation_time")
+    private Long creation_time;
+
+
 }
