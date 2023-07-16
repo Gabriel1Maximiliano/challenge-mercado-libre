@@ -24,7 +24,7 @@ server.error.include-message=always
 ``` 
 # Modelo entidad-relación 
 
-![](../../Users/Gabriel/Downloads/image.png.png)
+![](/assets/image.png)
 
 # Rutas
 
