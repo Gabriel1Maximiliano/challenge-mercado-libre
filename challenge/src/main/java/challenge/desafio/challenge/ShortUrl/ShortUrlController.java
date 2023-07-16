@@ -23,7 +23,7 @@ public class ShortUrlController {
     @GetMapping("/get-created")
     public ResponseEntity<List<ShortUrl>> getAllUrlCreated(){
 
-        var resp = shortUrlServices.getAmountOfUrl();
+         List<ShortUrl> resp = shortUrlServices.getAmountOfUrl();
 
         if (!resp.isEmpty()) {
             return ResponseEntity.ok(resp);
@@ -34,7 +34,7 @@ public class ShortUrlController {
     @GetMapping("/get-amount-created")
     public ResponseEntity<Integer> getAmountOfUrl(){
 
-        var resp = shortUrlServices.getAmountOfUrl().size();
+        int resp = shortUrlServices.getAmountOfUrl().size();
 
         if (resp >= 0) {
             return ResponseEntity.ok(resp);
@@ -45,7 +45,7 @@ public class ShortUrlController {
 
     @GetMapping("/get-amount-inactives")
     public ResponseEntity<Integer> getAllInactivesUrl(){
-        var resp = shortUrlServices.getAmountInactivesUrl();
+        int resp = shortUrlServices.getAmountInactivesUrl();
         if (resp >= 0) {
             return ResponseEntity.ok(resp);
         } else {
@@ -69,7 +69,7 @@ public class ShortUrlController {
 
     @PutMapping("/{url}/delete")
     public ResponseEntity<ShortUrl> logicDeleted(@PathVariable String url){
-        var resp = shortUrlServices.logicDeleted(url);
+        ShortUrl resp = shortUrlServices.logicDeleted(url);
         if(resp != null ){
             return ResponseEntity.status(HttpStatus.CREATED).body(resp);
         }
@@ -81,8 +81,8 @@ public class ShortUrlController {
     @PostMapping("/create-short-url")
     public ResponseEntity<String> createShortUrl(@RequestBody ShortUrl url){
 
-        var resp = shortUrlServices.createShortUrl(url);
-        if(resp !=null){
+        String resp = shortUrlServices.createShortUrl(url);
+        if(resp != null){
             return ResponseEntity.status(HttpStatus.CREATED).body(resp);
         }else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -92,9 +92,14 @@ public class ShortUrlController {
     }
     @GetMapping("/{url}/get")
     public ResponseEntity<Void> getOriginalUrl(@PathVariable String url){
-        System.out.println("desde base de datos con url"+ url +"desde db");
+
         var resp = shortUrlServices.getOriginalUrl(url);
-        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(resp)).build();
+        if(resp != null){
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(resp)).build();
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
     }
     @PutMapping("/{url}/restore")
     public ResponseEntity<ShortUrl> restoreUrl(@PathVariable String url){
@@ -137,7 +142,7 @@ public class ShortUrlController {
     @GetMapping("seed")
     public String getSeed(){
 var resp = shortUrlServices.getSeed();
-        return "dsoy seed";
+        return resp;
 
     }
 }

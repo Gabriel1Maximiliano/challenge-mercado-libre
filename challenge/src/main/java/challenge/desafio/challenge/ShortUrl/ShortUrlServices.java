@@ -174,24 +174,70 @@ public class ShortUrlServices {
     }
 
     public String getSeed() {
-        String[] urls = {
-                "https://www.google.com",
+
+        long startTime = System.currentTimeMillis();
+
+        String[] popularUrls = {
+                "https://www.amazon.com",
                 "https://www.youtube.com",
                 "https://www.facebook.com",
-                "https://www.amazon.com",
+                "https://www.google.com",
                 "https://www.twitter.com",
                 "https://www.instagram.com",
                 "https://www.linkedin.com",
                 "https://www.netflix.com",
+                "https://www.reddit.com",
+                "https://www.pinterest.com",
+                "https://www.apple.com",
+                "https://www.microsoft.com",
+                "https://www.ebay.com",
                 "https://www.wikipedia.org",
-                "https://www.github.com"
+                "https://www.netflix.com",
+                "https://www.stackoverflow.com",
+                "https://www.spotify.com",
+                "https://www.twitch.tv",
+                "https://www.imgur.com",
+                "https://www.etsy.com",
+                "https://www.aliexpress.com",
+                "https://www.dropbox.com",
+                "https://www.behance.net",
+                "https://www.adobe.com",
+                "https://www.wordpress.com",
+                "https://www.nytimes.com",
+                "https://www.cnn.com",
+                "https://www.bbc.co.uk",
+                "https://www.theguardian.com",
+                "https://www.nationalgeographic.com",
+                "https://www.bloomberg.com",
+                "https://www.forbes.com",
+                "https://www.cnbc.com",
+                "https://www.huffpost.com",
+                "https://www.msn.com",
+                "https://www.buzzfeed.com",
+                "https://www.techcrunch.com",
+                "https://www.engadget.com",
+                "https://www.gizmodo.com",
+                "https://www.wired.com",
+                "https://www.bbc.com",
+                "https://www.cnet.com",
+                "https://www.arstechnica.com",
+                "https://www.verge.com",
+                "https://www.yahoo.com",
+                "https://www.espn.com",
+                "https://www.nba.com",
+                "https://www.nfl.com",
+                "https://www.mlssoccer.com",
+                "https://www.instagram.com",
+                "https://www.pexels.com"
         };
 
-        for (String url : urls) {
+
+        for (String url : popularUrls) {
             ShortUrl shortUrl = new ShortUrl();
             shortUrl.setLong_url(url);
             shortUrlRepository.save(shortUrl);
         }
-
-        return "Ok:Seed ejecutado correctamente";
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        return "Ok:Seed ejecutado correctamente "+executionTime + "ms";
     }}
