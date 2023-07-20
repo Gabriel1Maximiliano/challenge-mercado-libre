@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path="api/url")
+@RequestMapping(path="/")
 public class ShortUrlController {
 
     private final ShortUrlServices shortUrlServices;
@@ -20,7 +20,7 @@ public class ShortUrlController {
     }
 
 
-    @GetMapping("/get-created")
+    @GetMapping("api/url/get-created")
     public ResponseEntity<List<ShortUrl>> getAllUrlCreated(){
 
          List<ShortUrl> resp = shortUrlServices.getAmountOfUrl();
@@ -31,7 +31,7 @@ public class ShortUrlController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    @GetMapping("/get-amount-created")
+    @GetMapping("api/url/get-amount-created")
     public ResponseEntity<Integer> getAmountOfUrl(){
 
         int resp = shortUrlServices.getAmountOfUrl().size();
@@ -43,7 +43,7 @@ public class ShortUrlController {
         }
     }
 
-    @GetMapping("/get-amount-inactives")
+    @GetMapping("api/url/get-amount-inactives")
     public ResponseEntity<Integer> getAllInactivesUrl(){
         int resp = shortUrlServices.getAmountInactivesUrl();
         if (resp >= 0) {
@@ -54,7 +54,7 @@ public class ShortUrlController {
     }
 
 
-    @GetMapping("/get-amount-actives")
+    @GetMapping("api/url/get-amount-actives")
     public ResponseEntity<Integer> getAllActivesUrl() {
         var resp = shortUrlServices.getAmountActivesUrl();
         if (resp >= 0) {
@@ -67,7 +67,7 @@ public class ShortUrlController {
 
 
 
-    @PutMapping("/{url}/delete")
+    @PutMapping("api/url/{url}/delete")
     public ResponseEntity<ShortUrl> logicDeleted(@PathVariable String url){
         ShortUrl resp = shortUrlServices.logicDeleted(url);
         if(resp != null ){
@@ -78,7 +78,7 @@ public class ShortUrlController {
         }
     }
 
-    @PostMapping("/create-short-url")
+    @PostMapping("api/url/create-short-url")
     public ResponseEntity<String> createShortUrl(@RequestBody ShortUrl url){
 
         String resp = shortUrlServices.createShortUrl(url);
@@ -90,10 +90,10 @@ public class ShortUrlController {
 
 
     }
-    @GetMapping("/{url}/get")
-    public ResponseEntity<Void> getOriginalUrl(@PathVariable String url){
+    @GetMapping("/{url}/{url2}")
+    public ResponseEntity<Void> getOriginalUrl(@PathVariable String url2){
 
-        var resp = shortUrlServices.getOriginalUrl(url);
+        var resp = shortUrlServices.getOriginalUrl(url2);
         if(resp != null){
             return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(resp)).build();
         }else{
@@ -101,7 +101,7 @@ public class ShortUrlController {
         }
 
     }
-    @PutMapping("/{url}/restore")
+    @PutMapping("api/url/{url}/restore")
     public ResponseEntity<ShortUrl> restoreUrl(@PathVariable String url){
         var resp = shortUrlServices.restoreUrl(url);
         if(resp != null ){
@@ -112,7 +112,7 @@ public class ShortUrlController {
         }
     }
 
-    @GetMapping("/active-info")
+    @GetMapping("api/url/active-info")
     public ResponseEntity<List<ShortUrl>> getAllInActiveUrlsInfo(){
         var resp = shortUrlServices.getAllInActiveUrlsInfo();
         if(resp != null ){
@@ -122,7 +122,7 @@ public class ShortUrlController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @GetMapping("/inactive-info")
+    @GetMapping("api/url/inactive-info")
     public ResponseEntity<List<ShortUrl>> getAllActiveUrlsInfo(){
         var resp = shortUrlServices.getAllActiveUrlsInfo();
         if(resp != null ){
@@ -132,7 +132,7 @@ public class ShortUrlController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @GetMapping("get-short-url")
+    @GetMapping("api/url/get-short-url")
     public String getShortUrl(@RequestBody RequestBodyDto id){
         long res = id.getId();
            return shortUrlServices.getShortUrl(res);
@@ -145,4 +145,5 @@ var resp = shortUrlServices.getSeed();
         return resp;
 
     }
+
 }

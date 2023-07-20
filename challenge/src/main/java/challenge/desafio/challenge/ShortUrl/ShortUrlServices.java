@@ -34,21 +34,29 @@ public class ShortUrlServices {
     public String createShortUrl(ShortUrl url) {
         long startTime = System.currentTimeMillis();
         try {
-            Optional<ShortUrl> alreadyCreated = shortUrlRepository.findUrl(url.getLong_url());
-            System.out.println("soy already created"+alreadyCreated);
-            if (!alreadyCreated.isPresent() ) {
-                url.setDateOfCreate(Date.valueOf(LocalDate.now()));
-                ShortUrl data = shortUrlRepository.save(url);
-                String resp = conversionUrl.encodeUrl(data.getId());
-                long endTime = System.currentTimeMillis();
-                long executionTime = endTime - startTime;
-                data.setCreation_time(executionTime);
-                shortUrlRepository.save(data);
-                System.out.println("Tiempo de creación: " + executionTime);
-                return resp;
-            } else {
-                return "La url ya está almacenada en la base de datos";
+            boolean isWordInUrl1 = url.getLong_url().toLowerCase().contains("mercadolibre");
+            if(isWordInUrl1){
+                Optional<ShortUrl> alreadyCreated = shortUrlRepository.findUrl(url.getLong_url());
+                if (!alreadyCreated.isPresent() ) {
+                    url.setDateOfCreate(Date.valueOf(LocalDate.now()));
+                    ShortUrl data = shortUrlRepository.save(url);
+                    String resp = conversionUrl.encodeUrl(data.getId());
+                    long endTime = System.currentTimeMillis();
+                    long executionTime = endTime - startTime;
+                    data.setCreation_time(executionTime);
+                    shortUrlRepository.save(data);
+                    System.out.println("Tiempo de creación: " + executionTime);
+                    return "https://me.li/"+resp;
+                } else {
+                    return "La url ya está almacenada en la base de datos";
+                }
+
+
+            }else {
+                return "Url no permitida la misma debe ser del tipo  'www.mercadolibre' o 'articulo.mercadolibre'";
             }
+
+
         } catch (Exception e) {
             System.err.println("Error en createShortUrl: " + e.getMessage());
             e.printStackTrace();
@@ -59,6 +67,7 @@ public class ShortUrlServices {
     public String getOriginalUrl(String url) {
         try {
             long startTime = System.currentTimeMillis();
+
             long id = conversionUrl.decodeUrl(url);
             Optional<ShortUrl> longUrl = shortUrlRepository.findById(id);
             if (longUrl.isPresent() && longUrl.get().getIs_active() == 1) {
@@ -178,57 +187,12 @@ public class ShortUrlServices {
         long startTime = System.currentTimeMillis();
 
         String[] popularUrls = {
-                "https://www.amazon.com",
-                "https://www.youtube.com",
-                "https://www.facebook.com",
-                "https://www.google.com",
-                "https://www.twitter.com",
-                "https://www.instagram.com",
-                "https://www.linkedin.com",
-                "https://www.netflix.com",
-                "https://www.reddit.com",
-                "https://www.pinterest.com",
-                "https://www.apple.com",
-                "https://www.microsoft.com",
-                "https://www.ebay.com",
-                "https://www.wikipedia.org",
-                "https://www.netflix.com",
-                "https://www.stackoverflow.com",
-                "https://www.spotify.com",
-                "https://www.twitch.tv",
-                "https://www.imgur.com",
-                "https://www.etsy.com",
-                "https://www.aliexpress.com",
-                "https://www.dropbox.com",
-                "https://www.behance.net",
-                "https://www.adobe.com",
-                "https://www.wordpress.com",
-                "https://www.nytimes.com",
-                "https://www.cnn.com",
-                "https://www.bbc.co.uk",
-                "https://www.theguardian.com",
-                "https://www.nationalgeographic.com",
-                "https://www.bloomberg.com",
-                "https://www.forbes.com",
-                "https://www.cnbc.com",
-                "https://www.huffpost.com",
-                "https://www.msn.com",
-                "https://www.buzzfeed.com",
-                "https://www.techcrunch.com",
-                "https://www.engadget.com",
-                "https://www.gizmodo.com",
-                "https://www.wired.com",
-                "https://www.bbc.com",
-                "https://www.cnet.com",
-                "https://www.arstechnica.com",
-                "https://www.verge.com",
-                "https://www.yahoo.com",
-                "https://www.espn.com",
-                "https://www.nba.com",
-                "https://www.nfl.com",
-                "https://www.mlssoccer.com",
-                "https://www.instagram.com",
-                "https://www.pexels.com"
+               "https://www.mercadolibre.com.ar/interruptor-miniatura-para-riel-din-chint-nxb-2-63-40a/p/MLA13661808#reco_item_pos=1&reco_backend=machinalis-homes-pdp-boos&reco_backend_type=function&reco_client=home_navigation-recommendations&reco_id=522b7a0c-798e-4954-8279-87dc98143dcf",
+                "https://listado.mercadolibre.com.ar/mancuernas#D[A:mancuernas,L:undefined]",
+                "https://www.mercadolibre.com.ar/ofertas/movetelibre23#DEAL_ID=MLA33037&S=MKT&V=1&T=TSB&L=MKTPLACE_PPS_CROSS_MOVETE_LIBRE&me.flow=-1&me.bu=3&me.audience=all&me.content_id=PPS13_MOVETELIBRE_banner_search&me.component_id=exhibitors_ml&me.logic=user_journey&me.position=0&me.bu_line=26",
+                "https://www.mercadolibre.com.ar/interruptor-sica-limit-782225/p/MLA11289920#reco_item_pos=3&reco_backend=machinalis-homes-pdp-boos&reco_backend_type=function&reco_client=home_navigation-recommendations&reco_id=1e37c5f9-4224-44b9-b8a3-f967e4708a18",
+                "https://articulo.mercadolibre.com.ar/MLA-1317236701-modulo-sensor-microonda-proximidad-presencia-radar-rcwl0516-_JM#reco_item_pos=1&reco_backend=machinalis-homes-pdp-boos&reco_backend_type=function&reco_client=home_navigation-trend-recommendations&reco_id=405fcf1d-03bc-4b6b-b8a6-d6af6665f77c",
+                "https://articulo.mercadolibre.com.ar/MLA-1420686792-sensor-ultrasonido-medidor-distancia-arduino-hc-sr04-_JM#reco_item_pos=1&reco_backend=adv_hybrid_L2_brothers_cruella&reco_backend_type=low_level&reco_client=vip-pads-up&reco_id=62732d36-55fd-4ea6-aa9e-c8873466a401&is_advertising=true&ad_domain=VIPDESKTOP_UP&ad_position=2&ad_click_id=ZjFlNzQ4Y2ItMTQ5NS00NzE2LWFkNjAtM2JkZTk1ZmIxMTg4",
         };
 
 
@@ -240,4 +204,9 @@ public class ShortUrlServices {
         long endTime = System.currentTimeMillis();
         long executionTime = endTime - startTime;
         return "Ok:Seed ejecutado correctamente "+executionTime + "ms";
-    }}
+    }
+    public String testUrl (String url){
+
+        return "el string es " ;
+    }
+}

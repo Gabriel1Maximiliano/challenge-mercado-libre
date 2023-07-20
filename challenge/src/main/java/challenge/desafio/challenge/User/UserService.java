@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -15,15 +16,15 @@ public class UserService {
         this.studentRepository = studentRepository;
     }
 
-    public List<User> getUser(){
+    public List<User> getUser() {
 
         return studentRepository.findAll();
     }
 
-    public void addNewUser(User user){
+    public void addNewUser(User user) {
 
         Optional<User> studentByEmail = studentRepository.findStudentByEmail(user.getEmail());
-        if( studentByEmail.isPresent() ){
+        if (studentByEmail.isPresent()) {
             throw new IllegalStateException("Email already exists");
         }
         studentRepository.save(user);
